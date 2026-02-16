@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RVGL Save Game Editor</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>RVGL Save Game Editor</h1>
+      <p class="subtitle">Import, edit, and export save files as ZIP</p>
+
+      <div class="card">
+        <div class="card-header">
+          <h2>Import</h2>
+          <div class="header-actions">
+            <button class="header-btn" onclick="loadStockPreset()">Stock</button>
+            <button class="header-btn" onclick="resetAll()">Empty</button>
+          </div>
+        </div>
+        <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
+          Drop a save ZIP here, or click to browse
+          <input type="file" id="fileInput" accept=".zip" onchange="handleFile(this.files[0])" />
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="field">
+          <label>Profile Name <span class="byte-count" id="profileCount">0 / 15</span></label>
+          <input type="text" id="profileName" maxlength="15" placeholder="e.g. Player1" oninput="update()" />
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h2>Save Files</h2>
+          <div class="header-actions">
+            <button class="header-btn del-btn" id="delBtn" onclick="removeActive()" title="Delete selected">
+              &times;
+            </button>
+            <input type="text" id="newName" maxlength="15" placeholder="name" />
+            <button class="header-btn" onclick="addEntry('level')">+ Level</button>
+            <button class="header-btn" onclick="addEntry('stunt')">+ Stunt</button>
+          </div>
+        </div>
+        <div class="track-tabs" id="tabBar"></div>
+        <div id="emptyState" class="empty-state">Import a ZIP or add files above.</div>
+
+        <div class="select-all-row" id="globalActions" style="display: none">
+          <button onclick="setAllEverything(true)">100% Everything</button>
+          <button onclick="setAllEverything(false)">Clear Everything</button>
+        </div>
+
+        <div id="levelPanel" class="panel">
+          <div class="track-name" id="trackLabel"></div>
+          <div class="field">
+            <label>Internal Name <span class="byte-count" id="levelInnerCount">0 / 15</span></label>
+            <input type="text" id="levelInnerName" maxlength="15" oninput="onInnerNameChange('level')" />
+          </div>
+          <div class="select-all-row">
+            <button onclick="setCurrentFlags(true)">Select All</button>
+            <button onclick="setCurrentFlags(false)">Clear All</button>
+          </div>
+          <div class="flags-grid" id="flagsGrid"></div>
+        </div>
+
+        <div id="stuntPanel" class="panel">
+          <div class="track-name" id="stuntLabel"></div>
+          <div class="field">
+            <label>Internal Name <span class="byte-count" id="stuntInnerCount">0 / 15</span></label>
+            <input type="text" id="stuntInnerName" maxlength="15" oninput="onInnerNameChange('stunt')" />
+          </div>
+          <div class="star-controls">
+            <label>Total stars:</label>
+            <input type="number" id="totalStars" min="0" max="64" value="0" oninput="updateStarGrid()" />
+          </div>
+          <p style="font-size: 0.75rem; color: #888; margin-top: 0.5rem">Click to toggle collected.</p>
+          <div class="star-grid" id="starGrid"></div>
+          <div class="select-all-row" style="margin-top: 0.75rem">
+            <button onclick="setAllStars(true)">All Stars</button>
+            <button onclick="setAllStars(false)">Clear Stars</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <p
+          id="extractNote"
+          style="
+            display: none;
+            font-size: 0.8rem;
+            color: #f0c674;
+            margin-bottom: 0.75rem;
+            text-align: center;
+            background: rgba(240, 198, 116, 0.08);
+            padding: 0.5rem;
+            border-radius: 4px;
+            border: 1px solid rgba(240, 198, 116, 0.2);
+          "
+        >
+          ⚠️ Your profile folder must match your profile name, otherwise the save won't work!
+        </p>
+        <div class="actions">
+          <button class="btn btn-primary" onclick="downloadZip()">Download ZIP</button>
+          <button class="btn btn-secondary" onclick="toggleHex()">Toggle Hex View</button>
+        </div>
+      </div>
+
+      <div class="card" id="hexCard" style="display: none">
+        <h2>Hex Dump</h2>
+        <div class="hex-viewer" id="hexViewer"></div>
+        <div class="legend">
+          <span><span class="dot" style="background: #6a9fb5"></span> Header</span>
+          <span><span class="dot" style="background: #b5bd68"></span> Profile</span>
+          <span><span class="dot" style="background: #cc99cc"></span> Level</span>
+          <span><span class="dot" style="background: #f0c674"></span> Data</span>
+          <span><span class="dot" style="background: #e94560"></span> CRC-32</span>
+        </div>
+      </div>
+    </div>
+
+    <script src="app.min.js"></script>
+  </body>
+</html>
