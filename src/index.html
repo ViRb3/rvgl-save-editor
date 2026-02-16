@@ -31,6 +31,20 @@
           <label>Profile Name <span class="byte-count" id="profileCount">0 / 15</span></label>
           <input type="text" id="profileName" maxlength="15" placeholder="e.g. Player1" oninput="update()" />
         </div>
+        <p
+          style="
+            font-size: 0.8rem;
+            color: #f0c674;
+            margin-top: 0.75rem;
+            text-align: center;
+            background: rgba(240, 198, 116, 0.08);
+            padding: 0.5rem;
+            border-radius: 4px;
+            border: 1px solid rgba(240, 198, 116, 0.2);
+          "
+        >
+          ⚠️ Your profile folder must match your profile name, otherwise the save won't work!
+        </p>
       </div>
 
       <div class="card">
@@ -86,22 +100,6 @@
       </div>
 
       <div class="card">
-        <p
-          id="extractNote"
-          style="
-            display: none;
-            font-size: 0.8rem;
-            color: #f0c674;
-            margin-bottom: 0.75rem;
-            text-align: center;
-            background: rgba(240, 198, 116, 0.08);
-            padding: 0.5rem;
-            border-radius: 4px;
-            border: 1px solid rgba(240, 198, 116, 0.2);
-          "
-        >
-          ⚠️ Your profile folder must match your profile name, otherwise the save won't work!
-        </p>
         <div class="actions">
           <button class="btn btn-primary" onclick="downloadZip()">Download ZIP</button>
           <button class="btn btn-secondary" onclick="toggleHex()">Toggle Hex View</button>

@@ -201,7 +201,6 @@ function loadStockPreset() {
   stunts.set("stunts", { innerName: "stunts", total: 20, stars: new Array(64).fill(false) });
   activeType = "level";
   activeName = stockLevels[0];
-  document.getElementById("extractNote").style.display = "none";
   rebuildUI();
 }
 
@@ -493,7 +492,6 @@ function downloadZip() {
   a.download = (document.getElementById("profileName").value || "saves") + ".zip";
   a.click();
   URL.revokeObjectURL(a.href);
-  document.getElementById("extractNote").style.display = "block";
 }
 
 function resetAll() {
@@ -506,7 +504,6 @@ function resetAll() {
   document.getElementById("fileInput").value = "";
   hexVisible = false;
   document.getElementById("hexCard").style.display = "none";
-  document.getElementById("extractNote").style.display = "none";
   rebuildUI();
 }
 
